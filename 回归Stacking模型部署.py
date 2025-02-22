@@ -32,7 +32,7 @@ Resilience = st.sidebar.number_input("Resilience (范围: 6-36)", min_value=6, m
 Depression = st.sidebar.number_input("Depression (范围: 0-3)", min_value=0, max_value=3, value=3)
 Anxiety = st.sidebar.number_input("Anxiety (范围: 0-3)", min_value=0, max_value=3, value=3)
 Family_support = st.sidebar.number_input("Family support (范围: 0-10)", min_value=0, max_value=10, value=5)
-Age = st.sidebar.selectboxnumber_input("Anxiety (范围: 21-63)", min_value=21, max_value=63, value=21)
+Age = st.sidebar.number_input("Age (范围: 21-63)", min_value=21, max_value=63, value=21)  # 修正为 number_input
 Occupation = st.sidebar.selectbox("Occupation", options=["Full-time job", "Part-time job"])
 Method_of_delivery = st.sidebar.selectbox("Method of delivery", options=["Vaginal delivery", "Cesarean section"])
 Marital_status = st.sidebar.selectbox("Marital status", options=["Married", "Unmarried"])
