@@ -10,6 +10,9 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import joblib
+from PIL import Image
+# 设置允许的最大图像像素数
+Image.MAX_IMAGE_PIXELS = 500000000  # 设置为 5 亿像素
 
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
