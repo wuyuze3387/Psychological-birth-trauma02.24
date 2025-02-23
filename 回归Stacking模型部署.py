@@ -56,7 +56,7 @@ if predict_button:
     try:
         # 将输入特征转换为模型所需格式
         input_array = np.array([
-            Resilience, Depression, Anxiety, Family_support, Intrapartum_pain, Postpartum_pain,
+            Resilience, Depression, Anxiety, Family_support, Age, Intrapartum_pain, Postpartum_pain,
             # 对于分类特征，需要将其转换为数值（例如通过编码）
             1 if Occupation == "Full-time job" else 0,
             1 if Method_of_delivery == "Vaginal delivery" else 0,
