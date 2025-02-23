@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import joblib
-
+from PIL import Image
 # 设置允许的最大图像像素数
 Image.MAX_IMAGE_PIXELS = 500000000  # 设置为 5 亿像素
 
@@ -35,7 +35,7 @@ Resilience = st.sidebar.number_input("Resilience (范围: 6-36)", min_value=6, m
 Depression = st.sidebar.number_input("Depression (范围: 0-3)", min_value=0, max_value=3, value=3)
 Anxiety = st.sidebar.number_input("Anxiety (范围: 0-3)", min_value=0, max_value=3, value=3)
 Family_support = st.sidebar.number_input("Family support (范围: 0-10)", min_value=0, max_value=10, value=5)
-Age = st.sidebar.number_input("Age (范围: 21-63)", min_value=21, max_value=63, value=21)
+Age = st.sidebar.number_input("Age (范围: 21-63)", min_value=21, max_value=63, value=21)  # 修正为 number_input
 Occupation = st.sidebar.selectbox("Occupation", options=["Full-time job", "Part-time job"])
 Method_of_delivery = st.sidebar.selectbox("Method of delivery", options=["Vaginal delivery", "Cesarean section"])
 Marital_status = st.sidebar.selectbox("Marital status", options=["Married", "Unmarried"])
@@ -58,29 +58,24 @@ if predict_button:
     st.header("预测结果")
     try:
         # 将输入特征转换为模型所需格式
-        input_df = pd.DataFrame([{
-            "Resilience": Resilience,
-            "Depression": Depression,
-            "Anxiety": Anxiety,
-            "Family_support": Family_support,
-            "Age": Age,
-            "Intrapartum_pain": Intrapartum_pain,
-            "Postpartum_pain": Postpartum_pain,
-            "Occupation": 1 if Occupation == "Full-time job" else 0,
-            "Method_of_delivery": 1 if Method_of_delivery == "Vaginal delivery" else 0,
-            "Marital_status": 1 if Marital_status == "Married" else 0,
-            "Educational_degree": 1 if Educational_degree == "Associate degree or below" else 0,
-            "Average_monthly_household_income": 1 if Average_monthly_household_income == "Average monthly household income less than or equal to 5000 yuan" else 0,
-            "Medical_insurance": 1 if Medical_insurance == "No" else 0,
-            "Mode_of_conception": 1 if Mode_of_conception == "Natural conception" else 0,
-            "Pregnancy_complications": 1 if Pregnancy_complications == "Yes" else 0,
-            "Breastfeeding": 1 if Breastfeeding == "Yes" else 0,
-            "Rooming_in": 1 if Rooming_in == "Yes" else 0,
-            "Planned_pregnancy": 1 if Planned_pregnancy == "Yes" else 0
-        }])
+        input_array = np.array([
+            Resilience, Depression, Anxiety, Family_support, Age, Intrapartum_pain, Postpartum_pain,
+            # 对于分类特征，需要将其转换为数值（例如通过编码）
+            1 if Occupation == "Full-time job" else 0,
+            1 if Method_of_delivery == "Vaginal delivery" else 0,
+            1 if Marital_status == "Married" else 0,
+            1 if Educational_degree == "Associate degree or below" else 0,
+            1 if Average_monthly_household_income == "Average monthly household income less than or equal to 5000 yuan" else 0,
+            1 if Medical_insurance == "No" else 0,
+            1 if Mode_of_conception == "Natural conception" else 0,
+            1 if Pregnancy_complications == "Yes" else 0,
+            1 if Breastfeeding == "Yes" else 0,
+            1 if Rooming_in == "Yes" else 0,
+            1 if Planned_pregnancy == "Yes" else 0
+        ]).reshape(1, -1)
 
         # 模型预测
-        prediction = stacking_regressor.predict(input_df)[0]
+        prediction = stacking_regressor.predict(input_array)[0]
 
         # 显示预测结果
         st.success(f"预测结果：{prediction:.2f}")
@@ -122,7 +117,7 @@ try:
     st.image(img3, caption="整体 Stacking 模型的 SHAP 贡献分析", use_container_width=True)
 except FileNotFoundError:
     st.warning("未找到整体 Stacking 模型的 SHAP 图像文件。")
-
+    
 # 页脚
 st.markdown("---")
 st.header("总结")
